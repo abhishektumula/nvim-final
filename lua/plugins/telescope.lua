@@ -10,6 +10,7 @@ return {
 		keys = {
 			{ "<leader>f", ":Telescope find_files<cr>", desc = "Find files" },
 			{ "<leader>fa", ":Telescope live_grep<cr>", desc = "Live grep" },
+			{ "<leader>ca", vim.lsp.buf.code_action, desc = "Code actions", mode = { "n", "x" } },
 		},
 		config = function()
 			require("telescope").setup({
@@ -22,8 +23,6 @@ return {
 			})
 			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("ui-select")
-
-			vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
 		end,
 	},
 }

@@ -17,24 +17,42 @@ return {
 			require("mason-lspconfig").setup(opts)
 
 			local registry = require("mason-registry")
-			local filetype_map = require("mason-lspconfig.mappings").get_filetype_map()
 			local lspconfig_to_pkg = require("mason-lspconfig.mappings").get_mason_map().lspconfig_to_package
+
+			local primary_servers = {
+				lua = "lua_ls",
+				python = "pyright",
+				javascript = "ts_ls",
+				typescript = "ts_ls",
+				javascriptreact = "ts_ls",
+				typescriptreact = "ts_ls",
+				go = "gopls",
+				rust = "rust_analyzer",
+				java = "jdtls",
+				yaml = "yamlls",
+				json = "jsonls",
+				html = "html",
+				css = "cssls",
+				bash = "bashls",
+				sh = "bashls",
+				markdown = "marksman",
+				vue = "vue_ls",
+				svelte = "svelte",
+			}
 
 			vim.api.nvim_create_autocmd("FileType", {
 				group = vim.api.nvim_create_augroup("mason-lsp-autoinstall", { clear = true }),
 				desc = "Auto-install LSP server for filetype",
 				callback = function(args)
-					local servers = filetype_map[args.match]
-					if not servers then
+					local lsp_name = primary_servers[args.match]
+					if not lsp_name then
 						return
 					end
-					for _, lsp_name in ipairs(servers) do
-						local pkg_name = lspconfig_to_pkg[lsp_name]
-						if pkg_name then
-							local ok, pkg = pcall(registry.get_package, pkg_name)
-							if ok and not pkg:is_installed() then
-								pkg:install()
-							end
+					local pkg_name = lspconfig_to_pkg[lsp_name]
+					if pkg_name then
+						local ok, pkg = pcall(registry.get_package, pkg_name)
+						if ok and not pkg:is_installed() then
+							pkg:install()
 						end
 					end
 				end,

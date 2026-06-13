@@ -15,7 +15,7 @@ return {
 				yaml = { "prettierd", "prettier" },
 				markdown = { "prettierd", "prettier" },
 				rust = { "rustfmt" },
-				go = { "gofumpt", "golines" },
+				go = { "gofumpt" },
 				sh = { "shfmt" },
 			},
 			format_on_save = {
