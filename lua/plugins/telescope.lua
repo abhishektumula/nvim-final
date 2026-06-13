@@ -1,46 +1,29 @@
 return {
 	{
-		'nvim-telescope/telescope.nvim', version = '*',
+		"nvim-telescope/telescope.nvim",
+		version = "*",
 		dependencies = {
-			'nvim-lua/plenary.nvim',
-			{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-		}, 
-
-		config = function() 
-			local builtin = require("telescope.builtin")
-			vim.keymap.set('n', '<leader>f', builtin.find_files, {})
-		end
-	},
-	{
-		"nvim-telescope/telescope-ui-select.nvim", 
+			"nvim-lua/plenary.nvim",
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+			"nvim-telescope/telescope-ui-select.nvim",
+		},
+		keys = {
+			{ "<leader>f", ":Telescope find_files<cr>", desc = "Find files" },
+			{ "<leader>fa", ":Telescope live_grep<cr>", desc = "Live grep" },
+		},
 		config = function()
-			-- This is your opts table
-			require("telescope").setup {
+			require("telescope").setup({
 				extensions = {
+					fzf = {},
 					["ui-select"] = {
-						require("telescope.themes").get_dropdown {
-							-- even more opts
-						}
+						require("telescope.themes").get_dropdown({}),
+					},
+				},
+			})
+			require("telescope").load_extension("fzf")
+			require("telescope").load_extension("ui-select")
 
-						-- pseudo code / specification for writing custom displays, like the one
-						-- for "codeactions"
-						-- specific_opts = {
-							--   [kind] = {
-								--     make_indexed = function(items) -> indexed_items, width,
-									--     make_displayer = function(widths) -> displayer
-										--     make_display = function(displayer) -> function(e)
-											--     make_ordinal = function(e) -> string
-												--   },
-												--   -- for example to disable the custom builtin "codeactions" display
-												--      do the following
-												--   codeactions = false,
-												-- }
-											}
-										}
-									}
-									-- To get ui-select loaded and working with telescope, you need to call
-									-- load_extension, somewhere after setup function:
-									require("telescope").load_extension("ui-select")
-								end
-							}
-						}
+			vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+		end,
+	},
+}

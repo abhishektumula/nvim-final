@@ -2,6 +2,9 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.g.mapleader = " "
 vim.opt.numberwidth = 6
+vim.opt.tabstop = 2      -- Visual width of a tab
+vim.opt.shiftwidth = 2   -- Width of an indent
+vim.opt.expandtab = true  -- Convert tabs to spaces
 -- color set to black 
 
 vim.api.nvim_create_autocmd("ColorScheme", {
